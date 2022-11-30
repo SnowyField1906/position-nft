@@ -1,0 +1,110 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "D:\\code rides me\\Mood-Tracker\\node_modules\\hardhat\\console.sol": {
+      "lastModificationDate": 1662538767416,
+      "contentHash": "cc4777addd464ea56fa35b1c45df0591",
+      "sourceName": "hardhat/console.sol",
+      "solcConfig": {
+        "version": "0.8.4",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.4.22 <0.9.0"
+      ],
+      "artifacts": [
+        "console"
+      ]
+    },
+    "D:\\code rides me\\Mood-Tracker\\contracts\\MoodTracker.sol": {
+      "lastModificationDate": 1664004132768,
+      "contentHash": "c704a785a5ba97481e2ffbc9093039c7",
+      "sourceName": "contracts/MoodTracker.sol",
+      "solcConfig": {
+        "version": "0.8.4",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.4"
+      ],
+      "artifacts": [
+        "MoodTracker"
+      ]
+    },
+    "D:\\code rides me\\Mood-Tracker\\contracts\\TestContract.sol": {
+      "lastModificationDate": 1664291652250,
+      "contentHash": "b75b6fdd426eec647662ba698cec716a",
+      "sourceName": "contracts/TestContract.sol",
+      "solcConfig": {
+        "version": "0.8.4",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.4"
+      ],
+      "artifacts": [
+        "TestContract"
+      ]
+    }
+  }
+}
