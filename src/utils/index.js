@@ -1,4 +1,4 @@
-import abi from './TestContract.json';
+import abi from './PositionNFT.json';
 
 export const contractABI = abi.abi;
-export const contractAddress = '0x86b12Ea9C904aCF4874069b4A14BC77b8BeE55E0';
+export const contractAddress = '0xa337c7C6BdCbeB726ba2B2D943D2c94a64083572';
