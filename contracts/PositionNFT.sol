@@ -8,29 +8,43 @@ import "./Pool.sol";
 contract PositionNFT is ERC721 {
     constructor() ERC721("PositionNFT", "PNFT") {}
 
-    uint256 public nextTokenId = 0;
+    uint256 public nextTokenID = 0;
+    uint256 public nextPoolID = 0;
 
-    mapping(uint256 => Position) public positions;
+    mapping(uint256 => bytes32) public poolIDs;
+    mapping(uint256 => Position) positions;
+    mapping(bytes32 => Pool) pools;
 
-    function mint(address _owner, int24 _tickLower, int24 _tickUpper, string memory _token0, string memory _token1, uint24 _fee) public {
-        uint256 tokenId = nextTokenId++;
-        _mint(_owner, tokenId);
-        positions[tokenId] = new Position(_tickLower, _tickUpper, _token0, _token1, _fee);
+
+    function mint(address _owner, bytes32 _poolID, int24 _tickLower, int24 _tickUpper, uint24 _price) public {
+        _mint(_owner, nextTokenID);
+        positions[ nextTokenID ] = new Position(_poolID, _tickLower, _tickUpper, _price);
+        nextTokenID++;
     }
 
-    function nftInfo(uint256 _tokenId) public view returns (address, int24, int24, string memory, string memory, uint24) {
-        Position position = positions[_tokenId];
-        (string memory token0, string memory token1, uint24 fee) = position.getPoolInfo();
-        (int24 tickLower, int24 tickUpper) = position.positionInfo();
-        return (ownerOf(_tokenId), tickLower, tickUpper, token0, token1, fee);
-    }
-    
-    function baseURI() internal pure returns (string memory) {
-        return "https://snowyfield1906.github.io/pool/";
+    function nftInfo(uint256 _tokenID) public view returns (address, int24, int24, uint24, bytes32) {
+        (bytes32 _poolID, int24 _tickLower, int24 _tickUpper, uint24 _price) = positions[ _tokenID ].positionInfo();
+        return (ownerOf(_tokenID), _tickLower, _tickUpper, _price, _poolID);
     }
 
-    function tokenURI(uint256 _tokenId) public view override returns (string memory) {
-        Position position = positions[_tokenId];
-        return string(abi.encodePacked(position.getPoolId(), string(abi.encodePacked(_tokenId))));
+    function poolInfo(bytes32 _poolID) public view returns (string memory, string memory, uint24) {
+        (string memory token0, string memory token1, uint24 fee) = pools[_poolID].poolInfo();
+        return (token0, token1, fee);
+    }
+
+    function addPool(string memory _token0, string memory _token1, uint24 _fee) public {
+        poolIDs[nextPoolID] = keccak256(abi.encodePacked(_token0, _token1, _fee));
+        pools[ poolIDs[nextPoolID] ] = new Pool(_token0, _token1, _fee);
+        nextPoolID++;
+    }
+
+    function availablePools() public view returns (bytes32[] memory) {
+        bytes32[] memory allPools = new bytes32[](nextPoolID);
+        for (uint256 i = 0; i < nextPoolID; i++) allPools[i] = poolIDs[i];
+        return allPools;
+    }
+
+    function burn(uint256 _tokenId) public {
+        _burn(_tokenId);
     }
 }
