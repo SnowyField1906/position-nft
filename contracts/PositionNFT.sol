@@ -16,15 +16,15 @@ contract PositionNFT is ERC721 {
     mapping(bytes32 => Pool) pools;
 
 
-    function mint(address _owner, bytes32 _poolID, int24 _tickLower, int24 _tickUpper, uint24 _price) public {
+    function mint(address _owner, bytes32 _poolID, int24 _tickLower, int24 _tickUpper, uint24 _amount) public {
         _mint(_owner, nextTokenID);
-        positions[ nextTokenID ] = new Position(_poolID, _tickLower, _tickUpper, _price);
+        positions[ nextTokenID ] = new Position(_poolID, _tickLower, _tickUpper, _amount);
         nextTokenID++;
     }
 
     function nftInfo(uint256 _tokenID) public view returns (address, int24, int24, uint24, bytes32) {
-        (bytes32 _poolID, int24 _tickLower, int24 _tickUpper, uint24 _price) = positions[ _tokenID ].positionInfo();
-        return (ownerOf(_tokenID), _tickLower, _tickUpper, _price, _poolID);
+        (bytes32 _poolID, int24 _tickLower, int24 _tickUpper, uint24 _amount) = positions[ _tokenID ].positionInfo();
+        return (ownerOf(_tokenID), _tickLower, _tickUpper, _amount, _poolID);
     }
 
     function poolInfo(bytes32 _poolID) public view returns (string memory, string memory, uint24) {
