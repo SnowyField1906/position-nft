@@ -1,5 +1,5 @@
 import { ethers } from "ethers"
-import { contractABI, contractAddress } from '../utils/index'
+import { contractABI, contractAddress } from '../utils'
 
 export const turnOnWeb3 = () => {
     const provider = new ethers.providers.Web3Provider(window.ethereum, "any");

@@ -5,24 +5,24 @@ import "./Pool.sol";
 
 contract Position {
     bytes32 poolId;
-    int24 tickLower;
-    int24 tickUpper;
-    uint24 amount;
+    uint256 tickLower;
+    uint256 tickUpper;
+    uint24 price;
 
     constructor(
         bytes32 _poolId,
-        int24 _tickLower,
-        int24 _tickUpper,
-        uint24 _amount
+        uint256 _tickLower,
+        uint256 _tickUpper,
+        uint24 _price
     ) {
         tickLower = _tickLower;
         tickUpper = _tickUpper;
         poolId = _poolId;
-        amount = _amount;
+        price = _price;
     }
 
-    function positionInfo() public view returns (bytes32, int24, int24, uint24) {
-        return (poolId, tickLower, tickUpper, amount);
+    function positionInfo() public view returns (bytes32, uint256, uint256, uint24) {
+        return (poolId, tickLower, tickUpper, price);
     }
     
 }
