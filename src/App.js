@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { turnOnWeb3 } from './provider/'
 
 import Mint from './container/Mint'
-import Pool from './components/Pool';
+import Gallery from './container/Gallery';
 
 function App() {
 
@@ -10,6 +10,7 @@ function App() {
 	return (
 		<>
 			<Mint />
+			<Gallery />
 		</>
 	)
 }

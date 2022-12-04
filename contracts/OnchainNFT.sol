@@ -35,22 +35,16 @@ contract OnchainNFT {
   }
 
   function drawSVG(string memory _owner, string memory _token0, string memory _token1, string memory _fee, string memory _tickLower, string memory _tickUpper, string memory _amount, bytes32 _poolID) public pure returns (string memory) {
-    string memory svgString = string(abi.encodePacked(
+    return string(abi.encodePacked(
       '<svg viewBox="0 0 300 500" xmlns="http://www.w3.org/2000/svg">',
       '<rect width="300" height="500" rx="40" ry="40" fill="#122347"/>',
       '<text transform="translate(56 470)" fill="#fff" font-family="Roboto" font-size="45"><tspan>', _token0, '/', _token1, '</tspan></text>',
       '<text transform="rotate(90 -1 18)" fill="#fff" font-family="Roboto" font-size="12"><tspan>', toHex(_poolID), '</tspan></text>',
       '<text transform="rotate(-90 345 60)" fill="#fff" font-family="Roboto" font-size="18"><tspan>', _owner, '</tspan></text>',
       '<text transform="translate(50 116)" fill="#fff" font-family="Roboto" font-size="20"><tspan>Min tick</tspan><tspan x="0" y="20">Max tick</tspan><tspan x="0" y="40">Amount</tspan></text>',
-      '<text transform="translate(185 116)" fill="#fff" font-family="Roboto" font-size="20"><tspan>', _tickLower, '</tspan><tspan x="0" y="20">', _tickUpper, '</tspan><tspan x="0" y="40">', _amount, ' ETH</tspan></text>',
+      '<text transform="translate(185 116)" fill="#fff" font-family="Roboto" font-size="20"><tspan>', _tickLower, '</tspan><tspan x="0" y="20">', _tickUpper, '</tspan><tspan x="0" y="40">', _amount, ' ', _token0, '</tspan></text>',
       '<text transform="translate(50 246)" fill="#fff" font-family="Roboto" font-size="20"><tspan>B. token</tspan><tspan x="0" y="20">Q. token</tspan><tspan x="0" y="40">Fee tier</tspan></text>',
       '<text transform="translate(185 246)" fill="#fff" font-family="Roboto" font-size="20"><tspan>', _token0, '</tspan><tspan x="0" y="20">', _token1, '</tspan><tspan x="0" y="40">', _fee, ' ppm</tspan></text>'
-    ));
-
-    return string(abi.encodePacked(
-      '<svg id="NFT" width="100%" height="100%" version="1.1" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">',
-      svgString,
-      "</svg>"
     ));
   }
 }

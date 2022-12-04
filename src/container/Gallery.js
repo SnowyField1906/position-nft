@@ -7,6 +7,7 @@ import Pool from '../components/Pool'
 function Gallery(props) {
 	const [numberOfNFTs, setNumberOfNFTs] = useState(0)
 	const [nfts, setNFTs] = useState([])
+	const [svgs, setSVGs] = useState([])
 
 	useEffect(() => {
 		fetchPools()
@@ -20,13 +21,13 @@ function Gallery(props) {
 				await contractInstance.nextTokenID().then((nextTokenID) => {
 					setNumberOfNFTs(nextTokenID.toNumber());
 				});
-				let nfts = [];
+				let svgs = [];
 				for (let i = 0; i < numberOfNFTs; i++) {
-					await contractInstance.nftInfo(i).then((nft) => {
-						nfts.push(nft);
-					});
+					await contractInstance.generateOnchainNFT(i).then((svg) => {
+						svgs.push(svg);
+					})
 				}
-				setNFTs(nfts);
+				setSVGs(svgs);
 			})
 	}
 
@@ -36,13 +37,15 @@ function Gallery(props) {
 				await contractInstance.availablePools().then((availablePools) => {
 					availablePools.forEach((pool) => {
 						contractInstance.poolInfo(pool).then((info) => {
-							setPools({ ...pools, [pool]: info })
+							setPools((pools) => { return { ...pools, [pool]: info } })
 						})
 					})
 				});
 				setPools(pools)
 			})
 	}
+
+	console.log(svgs)
 
 	useEffect(() => {
 		fetchNFTs();
@@ -71,6 +74,14 @@ function Gallery(props) {
 						: <div>Loading...</div>
 				}
 			</div>
+			{
+				svgs.length ? <div className='flex justify-center w-2/3'>
+					{svgs.map((svg) => {
+						return <div dangerouslySetInnerHTML={{ __html: svg }} />
+					})}
+				</div>
+					: <div>Loading...</div>
+			}
 		</div>
 	)
 }
