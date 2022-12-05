@@ -80,4 +80,5 @@ contract Position {
       "<text transform='translate(60 246)' fill='#fff' font-family='Roboto' font-size='20'><tspan>B. token</tspan><tspan x='0' y='20'>Q. token</tspan><tspan x='0' y='40'>Fee tier</tspan></text>",
       "<text transform='translate(170 246)' fill='#fff' font-family='Roboto' font-size='20'><tspan>", _token0, "</tspan><tspan x='0' y='20'>", _token1, "</tspan><tspan x='0' y='40'>", _fee, " ppm</tspan></text></svg>"
     ));
+  }
 }
