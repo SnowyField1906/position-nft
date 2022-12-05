@@ -1,11 +1,16 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.4;
+pragma solidity ^0.8.13;
 
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "./Position.sol";
-import "./Pool.sol";
 
 contract PositionNFT is ERC721URIStorage {
+    struct Pool {
+        string token0;
+        string token1;
+        uint24 fee;
+    }
+
     constructor () ERC721("PositionNFT", "PNFT") {}
 
     uint256 public nextTokenID = 0;
@@ -19,7 +24,7 @@ contract PositionNFT is ERC721URIStorage {
     function mint(address _owner, bytes32 _poolID, uint256 _tickLower, uint256 _tickUpper, uint24 _amount) public {
         _mint(_owner, nextTokenID);
         positions[ nextTokenID ] = new Position(_poolID, _tickLower, _tickUpper, _amount);
-        _setTokenURI(nextTokenID, positions[nextTokenID].generateOnchainNFT(nextTokenID, _owner, pools[_poolID]));
+        _setTokenURI(nextTokenID, positions[nextTokenID].generateOnchainNFT(nextTokenID, _owner, pools[_poolID].token0, pools[_poolID].token1, pools[_poolID].fee)); 
         nextTokenID++;
     }
 
@@ -30,13 +35,12 @@ contract PositionNFT is ERC721URIStorage {
 
 
     function poolInfo(bytes32 _poolID) public view returns (string memory, string memory, uint24) {
-        (string memory token0, string memory token1, uint24 fee) = pools[_poolID].poolInfo();
-        return (token0, token1, fee);
+        return (pools[_poolID].token0, pools[_poolID].token1, pools[_poolID].fee);
     }
 
     function addPool(string memory _token0, string memory _token1, uint24 _fee) public {
         poolIDs[nextPoolID] = keccak256(abi.encodePacked(_token0, _token1, _fee));
-        pools[ poolIDs[nextPoolID] ] = new Pool(_token0, _token1, _fee);
+        pools[ poolIDs[nextPoolID] ] = Pool(_token0, _token1, _fee);
         nextPoolID++;
     }
 
@@ -45,5 +49,4 @@ contract PositionNFT is ERC721URIStorage {
         for (uint256 i = 0; i < nextPoolID; i++) allPools[i] = poolIDs[i];
         return allPools;
     }
-
 }

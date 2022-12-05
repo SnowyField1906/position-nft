@@ -1,9 +1,8 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.4;
+pragma solidity ^0.8.13;
 
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "base64-sol/base64.sol";
-import "Pool.sol";
 
 contract Position {
     bytes32 poolID;
@@ -27,16 +26,13 @@ contract Position {
         return (poolID, tickLower, tickUpper, amount);
     }
 
-    function generateOnchainNFT(uint256 tokenID, address _owner, Pool pool) public view returns (string memory) {
-        (string memory token0, string memory token1, uint24 fee) = pool.poolInfo();
-        string memory svg = drawSVG(Strings.toHexString(_owner), token0, token1, Strings.toString(fee));
-
+    function generateOnchainNFT(uint256 tokenID, address _owner, string memory token0, string memory token1, uint24 fee) public view returns (string memory) {
         return string(abi.encodePacked(
             "data:application/json;base64,",
             Base64.encode(
                 bytes(abi.encodePacked(
                     '{"name":"', token0, '/', token1, ' - ', Strings.toString(fee), ' ppm",',
-                    '"image":"', svg, '",',
+                    '"image_data":"', drawSVG(Strings.toHexString(_owner), token0, token1, Strings.toString(fee)), '",',
                     '"description":"Position NFT #', Strings.toString(tokenID), '"}'
                 ))
             )
@@ -74,15 +70,14 @@ contract Position {
 
   function drawSVG(string memory _owner, string memory _token0, string memory _token1, string memory _fee) internal view returns (string memory) {
     return string(abi.encodePacked(
-      '<svg viewBox="0 0 300 500" xmlns="http://www.w3.org/2000/svg">',
-      '<rect width="300" height="500" rx="40" ry="40" fill="#122347"/>',
-      '<text transform="translate(56 470)" fill="#fff" font-family="Roboto" font-size="45"><tspan>', _token0, '/', _token1, '</tspan></text>',
-      '<text transform="rotate(90 -1 18)" fill="#fff" font-family="Roboto" font-size="12"><tspan>', toHex(poolID), '</tspan></text>',
-      '<text transform="rotate(-90 345 60)" fill="#fff" font-family="Roboto" font-size="18"><tspan>', _owner, '</tspan></text>',
-      '<text transform="translate(50 116)" fill="#fff" font-family="Roboto" font-size="20"><tspan>Min tick</tspan><tspan x="0" y="20">Max tick</tspan><tspan x="0" y="40">Amount</tspan></text>',
-      '<text transform="translate(185 116)" fill="#fff" font-family="Roboto" font-size="20"><tspan>', tickLower, '</tspan><tspan x="0" y="20">', tickUpper, '</tspan><tspan x="0" y="40">', amount, ' ', _token0, '</tspan></text>',
-      '<text transform="translate(50 246)" fill="#fff" font-family="Roboto" font-size="20"><tspan>B. token</tspan><tspan x="0" y="20">Q. token</tspan><tspan x="0" y="40">Fee tier</tspan></text>',
-      '<text transform="translate(185 246)" fill="#fff" font-family="Roboto" font-size="20"><tspan>', _token0, '</tspan><tspan x="0" y="20">', _token1, '</tspan><tspan x="0" y="40">', _fee, ' ppm</tspan></text>'
+      "<svg viewBox='0 0 300 500' xmlns='http://www.w3.org/2000/svg'>",
+      "<rect width='300' height='500' rx='40' ry='40' fill='#122347'/>",
+      "<text transform='translate(40 470)' fill='#fff' font-family='Roboto' font-size='45'><tspan>", _token0, "/", _token1, "</tspan></text>",
+      "<text transform='rotate(90 -1 18)' fill='#fff' font-family='Roboto' font-size='12'><tspan>", toHex(poolID), "</tspan></text>",
+      "<text transform='rotate(-90 381 100)' fill='#fff' font-family='Roboto' font-size='23.5'><tspan>", _owner, "</tspan></text>",
+      "<text transform='translate(60 116)' fill='#fff' font-family='Roboto' font-size='20'><tspan>Min tick</tspan><tspan x='0' y='20'>Max tick</tspan><tspan x='0' y='40'>Amount</tspan></text>",
+      "<text transform='translate(170 116)' fill='#fff' font-family='Roboto' font-size='20'><tspan>", Strings.toString(tickLower), "</tspan><tspan x='0' y='20'>", Strings.toString(tickUpper), "</tspan><tspan x='0' y='40'>", Strings.toString(amount), " ", _token0, "</tspan></text>",
+      "<text transform='translate(60 246)' fill='#fff' font-family='Roboto' font-size='20'><tspan>B. token</tspan><tspan x='0' y='20'>Q. token</tspan><tspan x='0' y='40'>Fee tier</tspan></text>",
+      "<text transform='translate(170 246)' fill='#fff' font-family='Roboto' font-size='20'><tspan>", _token0, "</tspan><tspan x='0' y='20'>", _token1, "</tspan><tspan x='0' y='40'>", _fee, " ppm</tspan></text></svg>"
     ));
-  }
 }
